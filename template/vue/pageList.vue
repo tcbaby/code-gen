@@ -18,13 +18,13 @@
     </div>
 
     <el-table v-loading="listLoading" :data="list" element-loading-text="Loading" border fit height="580px" class="table-container" highlight-current-row>
-      #foreach( $field in $fields )
+#foreach( $field in $fields )##
       <el-table-column align="center" width="100" label="$field.desc">
         <template slot-scope="scope">
           <span>{{ scope.row.$field.name }}</span>
         </template>
       </el-table-column>
-      #end
+#end##
 
       <el-table-column fixed="right" label="操作" width="200" align="center">
         <template slot-scope="scope">
@@ -43,16 +43,16 @@
     <pagination v-show="total > 0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="fetchData" />
 
     <el-dialog :visible.sync="dialogVisible" width="840px" :close-on-click-modal="false" :title="dialogType === 'modify' ? '修改' : '新增'">
-      <el-form ref="dataForm" :model="temp" label-width="120px" label-position="right">
-        #foreach( $field in $fields )
-        <el-form-item label="$field.desc">
-          #if ($field.el == 'input')
+      <el-form ref="${name}Form" :rules="${name}Rules" :model="temp" label-width="120px" label-position="right">
+#foreach( $field in $fields )##
+        <el-form-item label="$field.desc" prop="$field.name">
+#if ($field.el == 'input')##
           <el-input v-model="temp.$field.name" placeholder="$field.desc" />
-          #elseif ($field.el == 'select')
+#elseif ($field.el == 'select')##
           <select-id v-model="temp.$field.name" placeholder="$field.desc" :data="${field.name}SelectData" style="width: 100%" />
-          #end
+#end##
         </el-form-item>
-        #end
+#end##
       </el-form>
       <div style="text-align: right">
         <el-button type="danger" @click="dialogVisible = false">
@@ -71,9 +71,9 @@ import { deepClone } from '@/utils'
 
 const _temp = {
   id: '',
-  #foreach($field in $fields )
+#foreach($field in $fields )##
   $field.name: '',
-  #end
+#end##
 }
 
 export default {
@@ -95,7 +95,14 @@ export default {
       temp: Object.assign({}, _temp),
       dialogVisible: false,
       dialogType: 'create',
-      loading: false
+      loading: false,
+      ${name}Rules: {
+#foreach( $field in $fields )##
+#if ($field.rule)##
+        $field.name: [{ required: true, message: '请输入$field.desc', trigger: 'blur' }], 
+#end##
+#end##
+      }
     }
   },
   created() {
