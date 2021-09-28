@@ -11,11 +11,11 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ${Name}Repository extends MongoRepository<$Name, String> {
-#foreach( $field in $fields )
-#if($field.unique)
+#foreach( $field in $fields )##
+#if($field.unique)##
     /** 根据${field.desc}获取实体 */
-#set ($fieldName = $!field.name.substring(0,1).toUpperCase()+$!field.name.substring(1))
+#set ($fieldName = $!field.name.substring(0,1).toUpperCase()+$!field.name.substring(1))##
     $Name findBy${fieldName}($field.type $field.name);
-#end
-#end
+#end##
+#end##
 }

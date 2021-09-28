@@ -14,8 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document("$name")
 public class $Name {
     private String id;
-#foreach( $field in $fields )
+#foreach( $field in $fields )##
     /** $field.desc */
     private $field.type $field.name;
-#end
+#end##
 }
